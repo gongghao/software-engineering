@@ -33,14 +33,19 @@ class Spider:
         df.to_csv("./data/data.csv", index=False, encoding="utf-8", mode="a")
 
     def get_next_urls(self):
-        soup = BeautifulSoup(self.html, "lxml")
-        urls = soup.find_all("td", class_="sidebar-content")
-        next_url = []
-        for url in urls:
-            name = url.find("a").text
-            url = url.find("a").get("href")
-            next_url.append([name, url_root + url])
-        return next_url
+        with open("./data/software_engineering.html", 'r', encoding="utf-8") as f:
+            soup = BeautifulSoup(f, "lxml")
+            contents = soup.find_all("td", class_="sidebar-content")
+            next_url = []
+            for content in contents:
+                urls = content.find_all("a")
+                for url in urls:
+                    name = url.text
+                    url = url.get("href")
+                    #next_url.append([name, url_root + url])
+                    print(name)
+        
 
 test = Spider(url)
-test.url_parser()
+# test.url_parser()
+test.get_next_urls()
